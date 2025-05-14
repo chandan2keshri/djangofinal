@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Chai aur Django{% endblock %}</title>
+    <link href="{% static 'css/dist/styles.css' %}" rel="stylesheet" />
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("hidden");
+      }
+    </script>
+  </head>
+
+  <body class="bg-black text-white min-h-screen font-sans">
+    <!-- Navbar -->
+    <nav class="bg-gray-900 shadow-md">
+      <div
+        class="container mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <a href="/" class="text-2xl font-bold text-yellow-400">
+          ☕ Chai & Django
+        </a>
+        <button class="md:hidden text-white" onclick="toggleMenu()">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <ul class="hidden md:flex space-x-6 text-white">
+          <li><a href="/" class="hover:text-yellow-300 transition">Home</a></li>
+          <li>
+            <a href="/about" class="hover:text-yellow-300 transition">About</a>
+          </li>
+          <li>
+            <a href="/tweets" class="hover:text-yellow-300 transition"
+              >Tweets</a
+            >
+          </li>
+          <li>
+            <a href="/contact" class="hover:text-yellow-300 transition"
+              >Contact</a
+            >
+          </li>
+          <li>
+            <a href="/blog" class="hover:text-yellow-300 transition">Blog</a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <form method="post" action='{% url "logout" %}' class="inline">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition"
+            >
+              Logout
+            </button>
+          </form>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}" class="hover:text-yellow-300 transition"
+              >Login</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'register' %}"
+              class="hover:text-yellow-300 transition"
+              >Register</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+        <ul class="space-y-2 text-white">
+          <li><a href="/" class="block hover:text-yellow-300">Home</a></li>
+          <li>
+            <a href="/about" class="block hover:text-yellow-300">About</a>
+          </li>
+          <li>
+            <a href="/tweets" class="block hover:text-yellow-300">Tweets</a>
+          </li>
+          <li>
+            <a href="/contact" class="block hover:text-yellow-300">Contact</a>
+          </li>
+          <li><a href="/blog" class="block hover:text-yellow-300">Blog</a></li>
+
+          {% if user.is_authenticated %}
+          <form method="post" action='{% url "logout" %}' class="block">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="bg-red-500 hover:bg-red-600 text-white w-full px-4 py-2 rounded transition"
+            >
+              Logout
+            </button>
+          </form>
+          {% else %}
+          <li>
+            <a
+              href="{% url 'login' %}"
+              class="block hover:text-yellow-300 transition"
+              >Login</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'register' %}"
+              class="block hover:text-yellow-300 transition"
+              >Register</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+  </body>
+</html>

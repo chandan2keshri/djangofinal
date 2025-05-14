@@ -1,0 +1,67 @@
+{% extends "layout.html" %} {% load static %} {% block title %} Chai aur Tweet
+{% endblock %} {% block content %}
+
+<h1 class="text-3xl font-bold mb-6 text-center">
+  Welcome to Chai's Django project
+</h1>
+
+<div class="text-center mb-8">
+  <a
+    href="{% url 'tweet_create' %}"
+    class="text-green-500 font-semibold text-lg hover:underline"
+  >
+    + Create a tweet
+  </a>
+</div>
+
+<div class="flex flex-wrap gap-6 justify-center">
+  {% if tweets %} {% for tweet in tweets %}
+  <div
+    class="w-72 bg-black text-white rounded-lg shadow-md overflow-hidden flex flex-col justify-between"
+  >
+    <!-- Image or Placeholder -->
+    <div class="h-48">
+      {% if tweet.photo %}
+      <img
+        src="{{ tweet.photo.url }}"
+        alt="Photo by {{ tweet.user.username }}"
+        class="w-full h-full object-cover"
+      />
+      {% else %}
+      <div
+        class="w-full h-full bg-gray-600 flex items-center justify-center text-white"
+      >
+        No Image Available
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Tweet Content -->
+    <div class="p-4 flex flex-col gap-2 h-full">
+      <h5 class="text-lg font-semibold">{{ tweet.user.username }}</h5>
+      <p class="text-gray-300 mb-2">{{ tweet.text }}</p>
+
+      {% if tweet.user == user %}
+      <div class="flex gap-2 mt-auto">
+        <a
+          href="{% url 'tweet_edit' tweet.id %}"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full text-center"
+        >
+          Edit
+        </a>
+        <a
+          href="{% url 'tweet_delete' tweet.id %}"
+          class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition w-full text-center"
+        >
+          Delete
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %} {% else %}
+  <p class="text-gray-500 text-center w-full">No tweets to display.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
